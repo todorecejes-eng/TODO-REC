@@ -1,0 +1,821 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TODO/REC | Recambio de Autopartes</title>
+  <meta name="description" content="Especialistas en reparación y recambio de ejes traseros de suspensión. Servicio profesional, garantía y repuestos de calidad." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --blue: #2b3aaa;
+      --blue-dark: #1e2a88;
+      --blue-glow: rgba(43, 58, 170, 0.5);
+      --red: #cc1111;
+      --red-glow: rgba(204, 17, 17, 0.45);
+      --wa: #25d366;
+      --dark: #111111;
+      --surface: #1a1a1a;
+      --card: #222222;
+      --white: #ffffff;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--dark);
+      color: var(--white);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* ── SCROLL ANIMATIONS ── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(36px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .reveal-delay-1 { transition-delay: 0.1s; }
+    .reveal-delay-2 { transition-delay: 0.2s; }
+    .reveal-delay-3 { transition-delay: 0.3s; }
+    .reveal-delay-4 { transition-delay: 0.4s; }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      background: rgba(17,17,17,0.92);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(43,58,170,0.4);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.8rem 2rem;
+      transition: background 0.3s;
+    }
+
+    .nav-logo { display: flex; flex-direction: column; line-height: 1.1; }
+
+    .nav-logo .brand {
+      font-size: 1.4rem;
+      font-weight: 900;
+      letter-spacing: 0.06em;
+      color: var(--white);
+    }
+
+    .nav-logo .brand .slash { color: var(--red); }
+
+    .nav-logo .sub {
+      font-size: 0.58rem;
+      letter-spacing: 0.22em;
+      color: var(--blue);
+      text-transform: uppercase;
+      font-weight: 700;
+    }
+
+    .nav-cta {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: var(--wa);
+      color: var(--white);
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 0.82rem;
+      padding: 0.55rem 1.2rem;
+      border-radius: 6px;
+      transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
+      box-shadow: 0 0 0 rgba(37,211,102,0);
+    }
+
+    .nav-cta:hover {
+      background: #1da851;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 16px rgba(37,211,102,0.35);
+    }
+
+    .nav-cta svg { width: 16px; height: 16px; fill: currentColor; }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 8rem 1.5rem 5rem;
+      position: relative;
+      overflow: hidden;
+      background: var(--dark);
+    }
+
+    /* Animated grid background */
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(43,58,170,0.07) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(43,58,170,0.07) 1px, transparent 1px);
+      background-size: 48px 48px;
+      animation: gridMove 20s linear infinite;
+    }
+
+    @keyframes gridMove {
+      0% { background-position: 0 0; }
+      100% { background-position: 0 48px; }
+    }
+
+    /* Glow orbs */
+    .hero::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 55% 45% at 15% 65%, rgba(43,58,170,0.22) 0%, transparent 65%),
+        radial-gradient(ellipse 45% 35% at 85% 25%, rgba(204,17,17,0.15) 0%, transparent 65%);
+      pointer-events: none;
+    }
+
+    .hero-content { position: relative; z-index: 1; }
+
+    .hero-badge {
+      display: inline-block;
+      background: rgba(43,58,170,0.2);
+      border: 1px solid rgba(43,58,170,0.5);
+      color: #8899ff;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      padding: 0.4rem 1.1rem;
+      border-radius: 20px;
+      margin-bottom: 1.6rem;
+      animation: fadeDown 0.8s ease both;
+    }
+
+    @keyframes fadeDown {
+      from { opacity: 0; transform: translateY(-16px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .hero h1 {
+      font-size: clamp(2.4rem, 6vw, 5rem);
+      font-weight: 900;
+      line-height: 1.08;
+      margin-bottom: 1.4rem;
+      animation: fadeUp 0.9s 0.15s ease both;
+    }
+
+    .hero h1 .accent {
+      color: var(--red);
+      text-shadow: 0 0 40px var(--red-glow);
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .hero p {
+      font-size: clamp(1rem, 2.4vw, 1.18rem);
+      color: #aaaaaa;
+      max-width: 540px;
+      margin-bottom: 2.8rem;
+      animation: fadeUp 0.9s 0.3s ease both;
+    }
+
+    .hero-btns {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      justify-content: center;
+      animation: fadeUp 0.9s 0.45s ease both;
+    }
+
+    /* ── BUTTONS ── */
+    .btn-wa {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.65rem;
+      background: var(--wa);
+      color: var(--white);
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 1rem;
+      padding: 0.95rem 2.1rem;
+      border-radius: 8px;
+      transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
+      box-shadow: 0 0 0 rgba(37,211,102,0);
+    }
+
+    .btn-wa:hover {
+      background: #1da851;
+      transform: translateY(-3px);
+      box-shadow: 0 8px 28px rgba(37,211,102,0.4);
+    }
+
+    .btn-wa svg { width: 20px; height: 20px; fill: currentColor; flex-shrink: 0; }
+
+    .btn-outline {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.65rem;
+      background: transparent;
+      color: var(--white);
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 1rem;
+      padding: 0.95rem 2.1rem;
+      border-radius: 8px;
+      border: 1.5px solid rgba(43,58,170,0.6);
+      transition: border-color 0.2s, background 0.2s, box-shadow 0.2s;
+    }
+
+    .btn-outline:hover {
+      border-color: var(--blue);
+      background: rgba(43,58,170,0.12);
+      box-shadow: 0 0 20px rgba(43,58,170,0.2);
+    }
+
+    /* Pulse ring on hero CTA */
+    .btn-wa-wrap {
+      position: relative;
+      display: inline-flex;
+    }
+
+    .btn-wa-wrap::before {
+      content: '';
+      position: absolute;
+      inset: -4px;
+      border-radius: 12px;
+      background: transparent;
+      border: 2px solid var(--wa);
+      opacity: 0;
+      animation: pulse-ring 2.5s ease-out 1.2s infinite;
+    }
+
+    @keyframes pulse-ring {
+      0%   { opacity: 0.7; transform: scale(1); }
+      100% { opacity: 0;   transform: scale(1.18); }
+    }
+
+    /* ── MARQUEE STRIP ── */
+    .marquee-wrap {
+      background: var(--blue);
+      overflow: hidden;
+      padding: 12px 0;
+      border-top: 1px solid rgba(255,255,255,0.08);
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .marquee-track {
+      display: flex;
+      width: max-content;
+      animation: marquee 22s linear infinite;
+    }
+
+    .marquee-track span {
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      white-space: nowrap;
+      padding: 0 2.5rem;
+      color: rgba(255,255,255,0.85);
+    }
+
+    .marquee-track span::after {
+      content: '·';
+      margin-left: 2.5rem;
+      color: rgba(255,255,255,0.4);
+    }
+
+    @keyframes marquee {
+      from { transform: translateX(0); }
+      to   { transform: translateX(-50%); }
+    }
+
+    /* ── SECTION COMMONS ── */
+    .section-label {
+      text-align: center;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: #5566cc;
+      margin-bottom: 0.6rem;
+    }
+
+    .section-title {
+      text-align: center;
+      font-size: clamp(1.7rem, 4vw, 2.5rem);
+      font-weight: 900;
+      margin-bottom: 3.5rem;
+    }
+
+    .section-title .accent { color: var(--red); }
+
+    /* ── FEATURES ── */
+    .features {
+      background: var(--surface);
+      padding: 6rem 1.5rem;
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 1.25rem;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .feature-card {
+      background: var(--card);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-top: 2px solid var(--blue);
+      border-radius: 12px;
+      padding: 2rem 1.6rem;
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.3s, border-top-color 0.3s, box-shadow 0.3s;
+    }
+
+    .feature-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(43,58,170,0.1) 0%, transparent 70%);
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .feature-card:hover {
+      transform: translateY(-6px);
+      border-top-color: var(--red);
+      box-shadow: 0 12px 40px rgba(0,0,0,0.4), 0 0 0 1px rgba(204,17,17,0.1);
+    }
+
+    .feature-card:hover::before { opacity: 1; }
+
+    .feature-icon {
+      width: 46px;
+      height: 46px;
+      background: rgba(43,58,170,0.12);
+      border: 1px solid rgba(43,58,170,0.25);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1rem;
+      transition: background 0.3s, border-color 0.3s;
+    }
+
+    .feature-card:hover .feature-icon {
+      background: rgba(204,17,17,0.12);
+      border-color: rgba(204,17,17,0.3);
+    }
+
+    .feature-icon svg {
+      width: 22px;
+      height: 22px;
+      stroke: var(--blue);
+      fill: none;
+      stroke-width: 1.8;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      transition: stroke 0.3s;
+    }
+
+    .feature-card:hover .feature-icon svg { stroke: var(--red); }
+
+    .feature-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 0.5rem; }
+    .feature-card p { font-size: 0.87rem; color: #888; line-height: 1.6; }
+
+    /* ── SERVICES ── */
+    .services {
+      background: var(--dark);
+      padding: 6rem 1.5rem;
+    }
+
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1.25rem;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .service-card {
+      background: var(--surface);
+      border: 1px solid rgba(255,255,255,0.05);
+      border-radius: 12px;
+      padding: 2rem 1.75rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.3s, box-shadow 0.3s, border-color 0.3s;
+    }
+
+    .service-card::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--blue), var(--red));
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.4s ease;
+    }
+
+    .service-card:hover {
+      transform: translateY(-5px);
+      border-color: rgba(43,58,170,0.2);
+      box-shadow: 0 16px 48px rgba(0,0,0,0.5);
+    }
+
+    .service-card:hover::after { transform: scaleX(1); }
+
+    .service-number {
+      font-size: 2.8rem;
+      font-weight: 900;
+      color: rgba(43,58,170,0.2);
+      line-height: 1;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .service-card h3 { font-size: 1.05rem; font-weight: 700; }
+    .service-card p  { font-size: 0.85rem; color: #777; flex: 1; }
+
+    .service-tag {
+      display: inline-block;
+      background: rgba(204,17,17,0.12);
+      border: 1px solid rgba(204,17,17,0.2);
+      color: #ff7777;
+      font-size: 0.7rem;
+      font-weight: 700;
+      padding: 0.25rem 0.8rem;
+      border-radius: 20px;
+      align-self: flex-start;
+    }
+
+    /* ── WHY / STATS ── */
+    .why {
+      background: var(--blue-dark);
+      padding: 6rem 1.5rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .why::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 60% 50% at 50% 100%, rgba(0,0,0,0.35) 0%, transparent 70%);
+    }
+
+    .why .section-title { position: relative; }
+    .why .section-title .accent { color: #ffcc44; text-shadow: 0 0 30px rgba(255,204,68,0.4); }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 2rem;
+      max-width: 860px;
+      margin: 0 auto 3rem;
+      position: relative;
+    }
+
+    .stat {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .stat-num {
+      font-size: 3.2rem;
+      font-weight: 900;
+      line-height: 1;
+      color: #ffcc44;
+      text-shadow: 0 0 30px rgba(255,204,68,0.35);
+    }
+
+    .stat-label { font-size: 0.82rem; color: rgba(255,255,255,0.6); margin-top: 0.35rem; }
+
+    .why-tags {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 0.75rem;
+      max-width: 760px;
+      margin: 0 auto;
+      position: relative;
+    }
+
+    .why-tag {
+      background: rgba(255,255,255,0.07);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 8px;
+      padding: 0.55rem 1.15rem;
+      font-size: 0.85rem;
+      font-weight: 600;
+      transition: background 0.2s, border-color 0.2s;
+    }
+
+    .why-tag:hover {
+      background: rgba(255,255,255,0.12);
+      border-color: rgba(255,255,255,0.25);
+    }
+
+    /* ── CTA SECTION ── */
+    .cta-section {
+      background: var(--surface);
+      padding: 7rem 1.5rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cta-section::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 50% 60% at 50% 50%, rgba(43,58,170,0.08) 0%, transparent 70%);
+    }
+
+    .cta-section h2 {
+      font-size: clamp(1.9rem, 4.5vw, 3.2rem);
+      font-weight: 900;
+      margin-bottom: 1rem;
+      position: relative;
+    }
+
+    .cta-section h2 .accent { color: var(--red); }
+
+    .cta-section > p {
+      color: #888;
+      font-size: 1.05rem;
+      max-width: 480px;
+      margin: 0 auto 2.8rem;
+      position: relative;
+    }
+
+    .cta-wrap { position: relative; display: inline-block; }
+
+    .btn-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.75rem;
+      background: var(--wa);
+      color: var(--white);
+      text-decoration: none;
+      font-weight: 800;
+      font-size: 1.15rem;
+      padding: 1.1rem 2.6rem;
+      border-radius: 10px;
+      transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
+      box-shadow: 0 6px 30px rgba(37,211,102,0.3);
+      position: relative;
+    }
+
+    .btn-cta:hover {
+      background: #1da851;
+      transform: translateY(-4px);
+      box-shadow: 0 14px 48px rgba(37,211,102,0.45);
+    }
+
+    .btn-cta svg { width: 24px; height: 24px; fill: currentColor; flex-shrink: 0; }
+
+    .cta-note { margin-top: 1.2rem; font-size: 0.78rem; color: #555; }
+
+    /* ── FOOTER ── */
+    footer {
+      background: #0a0a0a;
+      border-top: 1px solid rgba(43,58,170,0.3);
+      padding: 2rem 1.5rem;
+      text-align: center;
+    }
+
+    .footer-brand {
+      font-size: 1.3rem;
+      font-weight: 900;
+      letter-spacing: 0.06em;
+      margin-bottom: 0.4rem;
+    }
+
+    .footer-brand .slash { color: var(--red); }
+
+    footer p { font-size: 0.78rem; color: #444; line-height: 1.8; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 640px) {
+      nav { padding: 0.75rem 1rem; }
+      .hero { padding: 6.5rem 1rem 4rem; }
+      .features, .services, .why, .cta-section { padding: 4rem 1rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <div class="nav-logo">
+      <span class="brand">TODO<span class="slash">/</span>REC</span>
+      <span class="sub">Recambio de Autopartes</span>
+    </div>
+    <a class="nav-cta" href="https://wa.me/5491133705406?text=Hola%2C%20quiero%20consultar%20por%20reparaci%C3%B3n%20de%20ejes" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+      Consultar ahora
+    </a>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-content">
+      <div class="hero-badge">⚙ Especialistas en suspensión trasera</div>
+      <h1>Reparación de<br><span class="accent">Ejes Traseros</span><br>con Garantía</h1>
+      <p>Servicio profesional de recambio y reparación de ejes traseros de suspensión. Diagnóstico preciso, repuestos de calidad y entrega rápida.</p>
+      <div class="hero-btns">
+        <div class="btn-wa-wrap">
+          <a class="btn-wa" href="https://wa.me/5491133705406?text=Hola%2C%20quiero%20consultar%20por%20reparaci%C3%B3n%20de%20ejes%20traseros" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+            Consultar por WhatsApp
+          </a>
+        </div>
+        <a class="btn-outline" href="#servicios">Ver servicios ↓</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- MARQUEE -->
+  <div class="marquee-wrap">
+    <div class="marquee-track">
+      <span>Reparación de ejes traseros</span>
+      <span>Garantía en todos los trabajos</span>
+      <span>Repuestos de calidad</span>
+      <span>Diagnóstico sin cargo</span>
+      <span>Entrega rápida</span>
+      <span>Todas las marcas</span>
+      <span>Técnicos especializados</span>
+      <span>Reparación de ejes traseros</span>
+      <span>Garantía en todos los trabajos</span>
+      <span>Repuestos de calidad</span>
+      <span>Diagnóstico sin cargo</span>
+      <span>Entrega rápida</span>
+      <span>Todas las marcas</span>
+      <span>Técnicos especializados</span>
+    </div>
+  </div>
+
+  <!-- FEATURES -->
+  <section class="features">
+    <p class="section-label">Por qué elegirnos</p>
+    <h2 class="section-title">Servicio que marca la <span class="accent">diferencia</span></h2>
+    <div class="features-grid">
+
+      <div class="feature-card reveal">
+        <div class="feature-icon">
+          <svg viewBox="0 0 24 24"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="9"/></svg>
+        </div>
+        <h3>Garantía incluida</h3>
+        <p>Todos nuestros trabajos cuentan con garantía escrita. Si algo falla, lo resolvemos sin costo adicional.</p>
+      </div>
+
+      <div class="feature-card reveal reveal-delay-1">
+        <div class="feature-icon">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 15"/></svg>
+        </div>
+        <h3>Entrega rápida</h3>
+        <p>Tiempos de entrega ágiles para que tu vehículo vuelva a la ruta cuanto antes, sin esperas innecesarias.</p>
+      </div>
+
+      <div class="feature-card reveal reveal-delay-2">
+        <div class="feature-icon">
+          <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        </div>
+        <h3>Repuestos de calidad</h3>
+        <p>Trabajamos solo con repuestos de primera línea para garantizar durabilidad y rendimiento óptimo.</p>
+      </div>
+
+      <div class="feature-card reveal reveal-delay-3">
+        <div class="feature-icon">
+          <svg viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+        </div>
+        <h3>Diagnóstico preciso</h3>
+        <p>Identificamos el problema real de tu suspensión antes de recomendar cualquier intervención.</p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- SERVICES -->
+  <section class="services" id="servicios">
+    <p class="section-label">Lo que hacemos</p>
+    <h2 class="section-title">Nuestros <span class="accent">Servicios</span></h2>
+    <div class="services-grid">
+
+      <div class="service-card reveal">
+        <div class="service-number">01</div>
+        <h3>Reparación de ejes traseros</h3>
+        <p>Reconstrucción completa del eje trasero de suspensión. Desmontaje, diagnóstico, reparación y prueba final.</p>
+        <span class="service-tag">Servicio principal</span>
+      </div>
+
+      <div class="service-card reveal reveal-delay-1">
+        <div class="service-number">02</div>
+        <h3>Recambio de componentes</h3>
+        <p>Sustitución de bujes, rótulas, amortiguadores y demás elementos de la suspensión trasera.</p>
+        <span class="service-tag">Alta demanda</span>
+      </div>
+
+      <div class="service-card reveal reveal-delay-2">
+        <div class="service-number">03</div>
+        <h3>Diagnóstico de suspensión</h3>
+        <p>Evaluación integral del estado de la suspensión trasera para detectar desgaste, holguras o daños ocultos.</p>
+        <span class="service-tag">Diagnóstico</span>
+      </div>
+
+      <div class="service-card reveal reveal-delay-3">
+        <div class="service-number">04</div>
+        <h3>Asesoramiento técnico</h3>
+        <p>Te explicamos el estado de tu vehículo con claridad y te recomendamos la solución más conveniente.</p>
+        <span class="service-tag">Sin cargo</span>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- WHY -->
+  <section class="why">
+    <p class="section-label" style="color:rgba(255,255,255,0.45)">Nuestra trayectoria</p>
+    <h2 class="section-title">Años de experiencia<br>que nos <span class="accent">respaldan</span></h2>
+    <div class="stats-grid">
+      <div class="stat reveal">
+        <span class="stat-num">+500</span>
+        <span class="stat-label">Ejes reparados</span>
+      </div>
+      <div class="stat reveal reveal-delay-1">
+        <span class="stat-num">100%</span>
+        <span class="stat-label">Garantía en trabajos</span>
+      </div>
+      <div class="stat reveal reveal-delay-2">
+        <span class="stat-num">24h</span>
+        <span class="stat-label">Respuesta promedio</span>
+      </div>
+    </div>
+    <div class="why-tags reveal">
+      <div class="why-tag">Técnicos especializados</div>
+      <div class="why-tag">Taller propio</div>
+      <div class="why-tag">Atención personalizada</div>
+      <div class="why-tag">Presupuesto sin cargo</div>
+      <div class="why-tag">Todas las marcas</div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta-section">
+    <h2 class="reveal">¿Tu suspensión tiene <span class="accent">problemas</span>?</h2>
+    <p class="reveal reveal-delay-1">Consultanos por WhatsApp y te damos un presupuesto sin cargo. Atendemos todo el día.</p>
+    <div class="cta-wrap reveal reveal-delay-2">
+      <a class="btn-cta" href="https://wa.me/5491133705406?text=Hola%2C%20quiero%20un%20presupuesto%20para%20reparaci%C3%B3n%20de%20ejes" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        Escribinos al WhatsApp
+      </a>
+    </div>
+    <p class="cta-note">11-3370-5406 · Respuesta rápida garantizada</p>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-brand">TODO<span class="slash">/</span>REC</div>
+    <p>Recambio de Autopartes · Especialistas en ejes traseros de suspensión</p>
+    <p>© 2025 TODO/REC · Todos los derechos reservados</p>
+  </footer>
+
+  <script>
+    const observer = new IntersectionObserver(
+      entries => entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); }),
+      { threshold: 0.12 }
+    );
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+  </script>
+
+</body>
+</html>
